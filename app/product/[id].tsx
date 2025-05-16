@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  Image, 
-  ScrollView, 
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import { useLocalSearchParams, Stack, useRouter } from 'expo-router';
 import { Product } from '@/types';
@@ -28,7 +28,7 @@ export default function ProductDetailScreen() {
   useEffect(() => {
     const getProductDetails = async () => {
       if (!id) return;
-      
+
       try {
         setLoading(true);
         setError(null);
@@ -62,9 +62,9 @@ export default function ProductDetailScreen() {
 
   if (error || !product) {
     return (
-      <ErrorView 
-        message={error || 'Product not found'} 
-        onRetry={() => router.back()} 
+      <ErrorView
+        message={error || 'Product not found'}
+        onRetry={() => router.back()}
         buttonText="Go Back"
       />
     );
@@ -78,7 +78,7 @@ export default function ProductDetailScreen() {
           headerShown: true,
           headerTransparent: true,
           headerLeft: () => (
-            <TouchableOpacity 
+            <TouchableOpacity
               onPress={() => router.back()}
               style={styles.backButton}
             >
@@ -87,13 +87,13 @@ export default function ProductDetailScreen() {
           ),
         }}
       />
-      <StatusBar style="light" />
+      <StatusBar style="auto" />
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.imageContainer}>
-          <Image 
-            source={{ uri: product.image }} 
-            style={styles.productImage} 
+          <Image
+            source={{ uri: product.image }}
+            style={styles.productImage}
             resizeMode="contain"
           />
         </View>
@@ -101,7 +101,7 @@ export default function ProductDetailScreen() {
         <View style={styles.detailsContainer}>
           <Text style={styles.category}>{product.category}</Text>
           <Text style={styles.title}>{product.title}</Text>
-          
+
           <View style={styles.ratingContainer}>
             <RatingStars rating={product.rating.rate} size={18} />
             <Text style={styles.ratingText}>
@@ -110,14 +110,14 @@ export default function ProductDetailScreen() {
           </View>
 
           <Text style={styles.price}>${product.price.toFixed(2)}</Text>
-          
+
           <Text style={styles.descriptionTitle}>Description</Text>
           <Text style={styles.description}>{product.description}</Text>
         </View>
       </ScrollView>
 
       <View style={styles.bottomContainer}>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.addToCartButton}
           onPress={handleAddToCart}
         >

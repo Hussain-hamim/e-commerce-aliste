@@ -19,6 +19,15 @@
     "plugins": ["expo-router", "expo-font", "expo-web-browser"],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "5fa65316-8c7d-4a49-beb5-05fbed8fef89"
+      }
+    },
+    "android": {
+      "package": "com.hussainhamim.ecommerce"
     }
   }
 }
