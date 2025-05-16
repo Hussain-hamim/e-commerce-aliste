@@ -18,16 +18,36 @@ import ErrorView from '@/components/ErrorView';
 import RatingStars from '@/components/RatingStars';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+/**
+ * ProductDetailScreen Component
+ *
+ * Displays detailed information about a single product including:
+ * - Product image
+ * - Title, category, and price
+ * - Rating and reviews
+ * - Full description
+ * - Add to cart functionality
+ *
+ * Handles loading states, error states, and safe area insets.
+ */
 export default function ProductDetailScreen() {
+  // Navigation and route parameters
   const { id } = useLocalSearchParams();
+  const router = useRouter();
+  const { top } = useSafeAreaInsets();
+
+  // State management
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Cart context
   const { addToCart } = useCart();
-  const router = useRouter();
 
-  const { top } = useSafeAreaInsets();
-
+  /**
+   * Fetches product details from API
+   * Handles loading states and errors
+   */
   useEffect(() => {
     const getProductDetails = async () => {
       if (!id) return;
@@ -48,12 +68,16 @@ export default function ProductDetailScreen() {
     getProductDetails();
   }, [id]);
 
+  /**
+   * Handles adding product to cart
+   */
   const handleAddToCart = () => {
     if (product) {
       addToCart(product);
     }
   };
 
+  // Loading state
   if (loading) {
     return (
       <View style={styles.centered}>
@@ -63,6 +87,7 @@ export default function ProductDetailScreen() {
     );
   }
 
+  // Error state
   if (error || !product) {
     return (
       <ErrorView
@@ -75,6 +100,7 @@ export default function ProductDetailScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Header Configuration */}
       <Stack.Screen
         options={{
           title: '',
@@ -92,7 +118,9 @@ export default function ProductDetailScreen() {
       />
       <StatusBar style="auto" />
 
+      {/* Main Content Scrollable Area */}
       <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Product Image Section */}
         <View style={styles.imageContainer}>
           <Image
             source={{ uri: product.image }}
@@ -101,10 +129,12 @@ export default function ProductDetailScreen() {
           />
         </View>
 
+        {/* Product Details Section */}
         <View style={styles.detailsContainer}>
           <Text style={styles.category}>{product.category}</Text>
           <Text style={styles.title}>{product.title}</Text>
 
+          {/* Rating Section */}
           <View style={styles.ratingContainer}>
             <RatingStars rating={product.rating.rate} size={18} />
             <Text style={styles.ratingText}>
@@ -112,13 +142,16 @@ export default function ProductDetailScreen() {
             </Text>
           </View>
 
+          {/* Price Section */}
           <Text style={styles.price}>${product.price.toFixed(2)}</Text>
 
+          {/* Description Section */}
           <Text style={styles.descriptionTitle}>Description</Text>
           <Text style={styles.description}>{product.description}</Text>
         </View>
       </ScrollView>
 
+      {/* Fixed Bottom Add to Cart Button */}
       <View style={styles.bottomContainer}>
         <TouchableOpacity
           style={styles.addToCartButton}
@@ -132,11 +165,17 @@ export default function ProductDetailScreen() {
   );
 }
 
+/**
+ * StyleSheet for ProductDetailScreen component
+ */
 const styles = StyleSheet.create({
+  // Main container styles
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
+
+  // Loading state styles
   centered: {
     flex: 1,
     justifyContent: 'center',
@@ -149,6 +188,8 @@ const styles = StyleSheet.create({
     color: '#64748B',
     fontFamily: 'Inter-Regular',
   },
+
+  // Header back button styles
   backButton: {
     width: 40,
     height: 40,
@@ -157,6 +198,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+  // Product image section styles
   imageContainer: {
     height: 350,
     backgroundColor: '#F1F5F9',
@@ -168,6 +211,8 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 250,
   },
+
+  // Product details section styles
   detailsContainer: {
     padding: 24,
   },
@@ -184,6 +229,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-Bold',
     marginBottom: 16,
   },
+
+  // Rating section styles
   ratingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -195,12 +242,16 @@ const styles = StyleSheet.create({
     color: '#64748B',
     fontFamily: 'Inter-Regular',
   },
+
+  // Price styles
   price: {
     fontSize: 24,
     color: '#3B82F6',
     fontFamily: 'Inter-Bold',
     marginBottom: 24,
   },
+
+  // Description section styles
   descriptionTitle: {
     fontSize: 18,
     color: '#1E293B',
@@ -213,6 +264,8 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     fontFamily: 'Inter-Regular',
   },
+
+  // Bottom add to cart section styles
   bottomContainer: {
     padding: 16,
     backgroundColor: '#FFFFFF',
