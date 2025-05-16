@@ -16,6 +16,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Star as StarIcon, ShoppingCart, ArrowLeft } from 'lucide-react-native';
 import ErrorView from '@/components/ErrorView';
 import RatingStars from '@/components/RatingStars';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams();
@@ -24,6 +25,8 @@ export default function ProductDetailScreen() {
   const [error, setError] = useState<string | null>(null);
   const { addToCart } = useCart();
   const router = useRouter();
+
+  const { top } = useSafeAreaInsets();
 
   useEffect(() => {
     const getProductDetails = async () => {
@@ -80,7 +83,7 @@ export default function ProductDetailScreen() {
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => router.back()}
-              style={styles.backButton}
+              style={[styles.backButton, { marginTop: top }]}
             >
               <ArrowLeft size={24} color="#FFFFFF" />
             </TouchableOpacity>
@@ -153,7 +156,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.3)',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 16,
   },
   imageContainer: {
     height: 350,
